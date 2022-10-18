@@ -1,17 +1,19 @@
 import os
 from DBConnect import mysql_connection
 from openpyxl import Workbook
+from dotenv import load_dotenv
 
 
 class exportExcel:
     """Add doc string"""
     def __init__(self) -> None:
+        self._load_env_var = load_dotenv()
         self.config = {
-    'user': os.getenv('USERNAME'),
-    'password': os.getenv('PASSWORD'),
-    'host': os.getenv('HOST'),
-    'database': os.getenv('DATABASE')
-    }
+        'user': os.getenv('USERNAME'),
+        'password': os.getenv('PASSWORD'),
+        'host': os.getenv('HOST'),
+        'database': os.getenv('DATABASE')
+        }
         self._check_config()
         self._check_connection()
 
@@ -23,11 +25,11 @@ class exportExcel:
                 self.config[key] = input(f"Enter Database {key}: ")
     
     def _check_connection(self) -> None:
-        " function checks to see if connection is viable with provided credintials"
+        """ function checks to see if connection is viable with provided credintials"""
         pass
 
     def exportMysqlToExcelWorkbook(self, filepath = ".") -> None:
-        "Add Doc String"
+        """Add Doc String"""
             
         with mysql_connection(**self.config) as conn:
             with conn.cursor() as cursor:
@@ -60,8 +62,5 @@ class exportExcel:
 
 
 if __name__ == "__main__":
-
-    from dotenv import load_dotenv
-    load_dotenv()
     db = exportExcel()
     db.exportMysqlToExcelWorkbook()
