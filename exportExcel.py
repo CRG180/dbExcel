@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 class exportExcel:
     """Add doc string"""
     def __init__(self) -> None:
-        self._load_env_var = load_dotenv()
+        load_dotenv()
         self.config = {
         'user': os.getenv('USERNAME'),
         'password': os.getenv('PASSWORD'),
@@ -38,14 +38,22 @@ class exportExcel:
 
                 for table in tables:
                     cursor.execute(f"SHOW columns FROM {table}")
-                    tables[table] = [column[0] for column in cursor.fetchall()]
+                    tables[table].append([column[0] for column in cursor.fetchall()])
+
+                for table in tables:
+                    cursor.execute(f"SELECT * FROM  {table}")
+                    rows = cursor.fetchall()
+                    for row in rows:
+                        tables[table].append(row)
+    
 
         # create excel workbook
         wb = Workbook()
 
         for table in tables.keys():
             _sheet = wb.create_sheet(title=table)
-            _sheet.append(tables[table])
+            for row in range(len(tables[table])):
+                _sheet.append(tables[table][row])
 
         del wb['Sheet']
         file = f"{filepath}/{self.config['database']}.xlsx"

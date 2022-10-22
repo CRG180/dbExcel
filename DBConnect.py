@@ -2,7 +2,7 @@ import contextlib
 import mysql.connector
 
 @contextlib.contextmanager
-def mysql_connection(*args, **kwargs):
+def mysql_connection(*args, **kwargs) -> None:
     conn = mysql.connector.connect(*args, **kwargs)
     try:
         yield conn
