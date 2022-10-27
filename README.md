@@ -4,3 +4,5 @@ Project is designed to create tools to export and (maybe) import data from a SQL
 
 Very much just the start. 
 
+    db = exportExcel()
+    db.exportMysqlToExcelWorkbook()
